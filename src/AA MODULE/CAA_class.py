@@ -2,8 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from timeit import default_timer as timer
-
+from timeit import default_timer as timer 
 from loading_bar_class import _loading_bar
 from AA_result_class import _CAA_result
 

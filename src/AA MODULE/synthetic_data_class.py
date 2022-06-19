@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.stats import norm
 import pickle
-import torch
 
 ########## CLASS FOR CREATING SYNTHETIC DATA  ##########
 class _synthetic_data:

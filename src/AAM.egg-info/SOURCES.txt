@@ -1,0 +1,20 @@
+LICENSE.txt
+README.txt
+pyproject.toml
+setup.cfg
+setup.py
+src/AA MODULE/AAM.py
+src/AA MODULE/AA_result_class.py
+src/AA MODULE/CAA_class.py
+src/AA MODULE/OAA_class.py
+src/AA MODULE/RBOAA_class.py
+src/AA MODULE/TSAA_class.py
+src/AA MODULE/__init__.py
+src/AA MODULE/loading_bar_class.py
+src/AA MODULE/plots_class.py
+src/AA MODULE/synthetic_data_class.py
+src/AAM.egg-info/PKG-INFO
+src/AAM.egg-info/SOURCES.txt
+src/AAM.egg-info/dependency_links.txt
+src/AAM.egg-info/requires.txt
+src/AAM.egg-info/top_level.txt

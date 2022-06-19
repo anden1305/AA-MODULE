@@ -131,13 +131,14 @@ class AA:
             success = False
 
         if success and self.has_dataframe:
-            self.create_dataframe(model_type=model_type,with_synthetic_data=with_synthetic_data)
-            self.create_dataframe(model_type=model_type,with_synthetic_data=with_synthetic_data,archetype_rank=3)
+            self.create_dataframe(model_type=model_type,with_synthetic_data=with_synthetic_data,mute=True)
+            self.create_dataframe(model_type=model_type,with_synthetic_data=with_synthetic_data,archetype_rank=3,mute=True)
 
 
     def plot(self, 
             model_type: str = "CAA", 
             plot_type: str = "PCA_scatter_plot", 
+            title: str = "",
             save_figure: bool = False,
             filename: str = "figure",
             result_number: int = 0, 
@@ -151,7 +152,7 @@ class AA:
         
         if not model_type in ["CAA", "OAA", "RBOAA", "TSAA"]:
             print("\nThe model type you have specified can not be recognized. Please try again.")
-        elif not plot_type in ["PCA_scatter_plot","attribute_scatter_plot","loss_plot","mixture_plot","barplot","barplot_all","typal_plot","pie_chart","attribute_distribution"]:
+        elif not plot_type in ["PCA_scatter_plot","attribute_scatter_plot","loss_plot","mixture_plot","barplot","barplot_all","typal_plot","pie_chart","attribute_distribution","circular_typal_barplot"]:
             print("\nThe plot type you have specified can not be recognized. Please try again.\n")
         elif not weighted in ["none","equal_norm","equal","norm"]:
             print(f"\nThe \'weighted\' parameter received an unexpected value of {weighted}.\n")
@@ -169,7 +170,7 @@ class AA:
                 print(f"\nThe \'subject_indexes\' parameter received an unexpected value of {subject_indexes}.\n")
             else:
                 result = self._results[model_type][result_number]
-                result._plot(plot_type,attributes,archetype_number,types,weighted,subject_indexes,attribute_indexes, self.archetype_dataframe ,save_figure,filename)
+                result._plot(plot_type,attributes,archetype_number,types,weighted,subject_indexes,attribute_indexes, self.archetype_dataframe ,save_figure,filename,title)
                 if save_figure:
                     print("\nThe requested plot was successfully saved to your device!\n")
                 else:
@@ -186,7 +187,7 @@ class AA:
                 print(f"\nThe \'subject_indexes\' parameter received an unexpected value of {subject_indexes}.\n")
             else:
                 result = self._synthetic_results[model_type][result_number]
-                result._plot(plot_type,attributes,archetype_number,types,weighted,subject_indexes,attribute_indexes, self.archetype_dataframe,save_figure,filename)
+                result._plot(plot_type,attributes,archetype_number,types,weighted,subject_indexes,attribute_indexes, self.archetype_dataframe,save_figure,filename,title)
                 print("\nThe requested synthetic data result plot was successfully plotted!\n")
 
 
@@ -249,7 +250,7 @@ class AA:
                 self.has_synthetic_data = True
 
 
-    def create_dataframe(self, model_type: str = "CAA", result_number: int = 0, with_synthetic_data: bool = False, archetype_rank: int = 0, return_dataframe: bool = False):
+    def create_dataframe(self, model_type: str = "CAA", result_number: int = 0, with_synthetic_data: bool = False, archetype_rank: int = 0, return_dataframe: bool = False, mute = False):
         
         if not model_type in ["CAA", "OAA", "RBOAA", "TSAA"]:
             print("\nThe model type you have specified can not be recognized. Please try again.\n")
@@ -269,7 +270,8 @@ class AA:
                 self.archetype_dataframe = self.dataframe.copy()
                 for archetype in range(result.K):
                     self.archetype_dataframe["Archetype {0}".format(archetype+1)] = result.A[archetype,:]
-                print("\nThe dataframe was successfully created from a copy of your imported dataframe.\n")
+                if not mute:
+                    print("\nThe dataframe was successfully created from a copy of your imported dataframe.\n")
                 
             else:
                 dict = {}
@@ -277,7 +279,8 @@ class AA:
                     dict["Archetype {0}".format(archetype+1)] = result.A[archetype,:]
                 archetype_dataframe = pd.DataFrame.from_dict(dict)
                 self.archetype_dataframe = archetype_dataframe
-                print("\nThe dataframe was successfully created.\n")
+                if not mute:
+                    print("\nThe dataframe was successfully created.\n")
 
         else:
             if self.has_dataframe:
@@ -287,7 +290,8 @@ class AA:
                     for n in range(result.N):
                         rank_list.append(np.where(result.A[:,n] == np.sort(result.A[:,n])[::-1][rank])[0][0]+1)
                     self.ranked_archetype_dataframe["Archetype Rank {0}".format(rank+1)] = rank_list
-                print("\nThe dataframe was successfully created from a copy of your imported dataframe.\n")
+                if not mute:
+                    print("\nThe dataframe was successfully created from a copy of your imported dataframe.\n")
 
         if archetype_rank == False:
             self.has_archetype_dataframe = True
